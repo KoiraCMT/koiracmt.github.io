@@ -315,6 +315,560 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/22/关于闭包/" itemprop="url">
+                  关于闭包
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-22T17:04:21+08:00" content="2015-12-22">
+              2015-12-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 </p>
+<h3 id="计数事件">计数事件</h3><pre><code class="bash">increment();  //Number of events:<span class="number">1</span>
+
+increment();  //Number of events:<span class="number">2</span>
+
+increment();  //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上面的代码中会在我们每次执行increment()函数时，显示一条信息“Number of events:x”。下面是这个函数的简单实现：  </p>
+<pre><code class="bash">var counter = <span class="number">0</span>;
+
+<span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+    counter = counter + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span> + conunter);
+}
+</code></pre>
+<h3 id="多个计数器">多个计数器</h3><p>上述代码非常简单明了。然而，当我们引入第二个计数器时，就会很快遇到问题。当然，我们能实现两个单独的计数器机制，如下面的代码，但很明显我们有需要改进它的地方：  </p>
+<pre><code class="bash">var counter1 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter1</span></span>(){
+    counter1 = counter1 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter1);
+}
+
+var counter2 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter2</span></span>(){
+    counter2 = counter2 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter2);
+}
+
+incrementCounter1();   //Number of events:<span class="number">1</span>
+incrementCounter2();   //Number of events:<span class="number">1</span>
+incrementCounter1();   //Number of events:<span class="number">2</span>
+</code></pre>
+<p>上述代码出现了不必要的重复。明显的，这种解决方案并不适用于超过二个或三个计数器的情况。我们需要找出更好的解决方案。  </p>
+<h3 id="引入第一个闭包">引入第一个闭包</h3><p>在与上述例子相似的情况下，我们以新的方式引入计数器，该计数器捆绑了一个能自增的函数，而且没有大量重复的代码。    </p>
+<pre><code class="bash"><span class="keyword">function</span> <span class="function"><span class="title">createCounter</span></span>(){
+
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of events: '</span>+counter); 
+    }
+    <span class="built_in">return</span> incrememt;
+}
+</code></pre>
+<p>接下来让我看看这段代码是如何工作的。我们将创建两个计数器，并让它们跟踪两个独立事件：    </p>
+<pre><code class="bash">var counter1 = createCounter();
+var counter2 = createCounter();
+
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+counter2();   //Number of events:<span class="number">1</span>
+
+counter1();   //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上述代码变的有些复杂了，其实还是很简单的，这里我们将实现逻辑分成几个易于理解的块，来看看我们实现了什么：  </p>
+<ul>
+<li>首先，创建了一个名为counter的局部变量。</li>
+<li>然后，创建了一个名为increment()的局部函数，它能增加increment的变量值。<br>你应该注意到了，createCounter()的实现与我们原先的计数器实现几乎一致。唯一不同的是它被包装或封装在一个函数体内。因此，这些构造函数被称为<strong><em>闭包</em></strong>。  </li>
+</ul>
+<p>现在是棘手的部分：  </p>
+<ul>
+<li>在createCounter的最后一步返回了局部函数increment。请注意，这并不是返回调用函数的运行结果，而是函数本身。</li>
+</ul>
+<p>这就意味着，当我们在这个代码下面创建新的计数器时，实际上是生成了一个新的函数。    </p>
+<pre><code class="bash">//fancyNewCounter 是当前作用域的一个函数
+var fancyNewCounter = createCounter();
+</code></pre>
+<p>这就是闭包生命周期的力量所在。每个生成的函数，都会保持在createCounter()所创建的counter变量的引用。在某种意义上，被返回的函数记住了它所被创建时的环境。<br>在这里需要提醒大家注意的，内部变量counter都是独立于存在于每个作用域！例如，如果我们创建两个计时器，那么它们都会在闭包内分配一个新的counter变量。我们观察以下代码：  </p>
+<p>每个计数器都会从1算起    </p>
+<pre><code class="bash">var counter1 = createCounter();
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+var counter2 = createCounter();
+counter2();   //Number of events:<span class="number">1</span>
+</code></pre>
+<p>第二个计数器并不会干扰第一个计数器的值：   </p>
+<pre><code class="bash">counter1();   // Number of events:<span class="number">3</span>
+</code></pre>
+<h3 id="为我们的计数器命名">为我们的计数器命名</h3><p>信息“Number of evnents:x” 是没问题的，但如果能描述每个计数事件的类型，那么这将会更好。以下例子，我们为计数器添加名字：  </p>
+<pre><code class="bash">var catCounter = createCounter(<span class="string">'cat'</span>);
+var dogCounter = createCounter(<span class="string">'dog'</span>);
+
+catCounter();   //Number of cats:<span class="number">1</span>
+catCounter();   //Number of cats:<span class="number">2</span>
+dogCounter();   //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>我们只要为闭包传递参数就能达到目的：</p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+    <span class="built_in">return</span> increment;
+}
+</code></pre>
+<p>请注意上述createCounter()函数的一个有趣行为。返回函数不仅记住了局部变量counter,而且记住了传递进来的参数。  </p>
+<h3 id="改善公用接口">改善公用接口</h3><p>我所说的公用接口是指，我们如何使用计数器。这并不是单纯指，当被创建的计数器被调用时会增加值。</p>
+<pre><code class="bash">var dogCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogCounter.increment();  //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>让我们创建这样一个实现：</p>
+<pre><code class="bash"><span class="keyword">function</span> CreateCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="built_in">return</span> {increment:increment};
+}
+</code></pre>
+<p>在上述代码中，我们简单返回一个对象，该对象包含了该闭包的所有功能。在某种意义下，我们能定义闭包能返回的一系列信息。   </p>
+<h3 id="增加一个减量">增加一个减量</h3><p>现在，我们能非常简单的为计数器引入减量(decrement)。     </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">": "</span> + counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();  // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();  // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();  // Number of dogs: <span class="number">3</span>
+</code></pre>
+<h3 id="隐藏计数器行为">隐藏计数器行为</h3><p>上述代码还是有写冗余的代码行，没错，就是console.log()。如果能创建一个专门用于显示计数器值的函数将会更好。让我们调用display函数。  </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">display</span></span>(){
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+        display();
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+        display();
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();   // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();   // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();   // Number of dogs: <span class="number">1</span>
+</code></pre>
+<p>display()和increment()、decrement()不同，因为它没有被返回，所以无法调用。这意味着以下代码调用会失败：</p>
+<pre><code class="bash">var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.display();    // ERROR!!!
+</code></pre>
+<p>我们让display()函数对外部来说是不可见的。它仅在createCounter()内可见。  </p>
+<h3 id="闭包与面向对象编程">闭包与面向对象编程</h3><p>正如我在一开始说的，闭包的感觉给我感觉就像类一样，实例化、私有/公有方法，都会将一些能操作内部数据的函数联系在一起。因此，你能在任何地方像使用对象一样使用闭包。 </p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/25/使用Bootcamp安装windows8-1/" itemprop="url">
+                  使用Bootcamp安装windows8.1
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-11-25T16:35:37+08:00" content="2015-11-25">
+              2015-11-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Mac/" itemprop="url" rel="index">
+                    <span itemprop="name">Mac</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>前几天因为项目需要，需要使用windows平台下的一个软件开发，本来想着用Parallels Desktop装个windows7的虚拟机开发就行了，结果虚拟机不能与其他同事通信，而我又不太会调配这些东西，于是果断悲剧了，然后就想到Mac下自带了Bootcamp用它装个双系统就可以搞定了，于是就在机子上折腾了一天，真是把自己坑的不轻啊，百度上面也是有攻略的，但多少写的还是不够详细，这里当个记录分享给大家吧。</p>
+<p>我的系统是10.10.4的，所以只能装windows8以上版本。Bootcamp在哪我就不用说了吧，不然你还是别用了(￣_￣ )</p>
+<h4 id="1-打开BootCamp后点击继续">1.打开BootCamp后点击继续</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151115_2.jpg" alt="image"></p>
+<h4 id="2-选取如图所示选项点击继续">2.选取如图所示选项点击继续</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151124_1.jpg" alt="image"></p>
+<h4 id="3-提前下好一个wdinows8-1的系统镜像，并且准备好一个空的U盘，点击继续">3.提前下好一个wdinows8.1的系统镜像，并且准备好一个空的U盘，点击继续</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Windows <span class="number">8.1</span>简体中文专业版+核心版 MSDN 正式版（<span class="number">64</span>位）    ed2k://|file|cn_windows_8_1_x64_dvd_2707237.iso|<span class="number">4076017664</span>|<span class="number">839</span>CBE17F3CE8411E8206B92658A91FA|/</span><br><span class="line"></span><br><span class="line">Windows <span class="number">8.1</span>简体中文专业版+核心版 MSDN 正式版（<span class="number">32</span>位）    ed2k://|file|cn_windows_8_1_x86_dvd_2707405.iso|<span class="number">3055904768</span>|B296A943F16FADFC5FFA2F1D583DCC49|/</span><br><span class="line"></span><br><span class="line">Windows <span class="number">8.1</span> 简体中文专业大客户版 MSDN 正式版（<span class="number">64</span>位）    ed2k://|file|cn_windows_8_1_pro_vl_x64_dvd_2971907.iso|<span class="number">4032598016</span>|<span class="number">1</span>FDA520B3E8880E2FB00B20439E0826E|/</span><br><span class="line"></span><br><span class="line">Windows <span class="number">8.1</span> 简体中文专业大客户版 MSDN 正式版（<span class="number">32</span>位）    ed2k://|file|cn_windows_8_1_pro_vl_x86_dvd_2972620.iso|<span class="number">3049981952</span>|<span class="number">5</span>B396C3A0BA99617647D9AFE8403AFA5|/</span><br><span class="line"></span><br><span class="line">Windows <span class="number">8.1</span> 简体中文企业版 MSDN 正式版（<span class="number">64</span>位）         ed2k://|file|cn_windows_8_1_enterprise_x64_dvd_2971863.iso|<span class="number">4039327744</span>|<span class="number">08</span>BAF18320B8FFC58D4C35BCC7A32012|/</span><br><span class="line"></span><br><span class="line">Windows <span class="number">8.1</span> 简体中文企业版 MSDN 正式版（<span class="number">32</span>位）         ed2k://|file|cn_windows_8_1_enterprise_x86_dvd_2972257.iso|<span class="number">3050842112</span>|<span class="number">6</span>B60ABF8282F943FE92327463920FB67|/</span><br></pre></td></tr></table></figure>
+<p>注：将ed2k开头的下载链接复制粘贴到「迅雷」中下载。</p>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151115_6.jpg" alt="image"></p>
+<h4 id="4-这里会提醒我们格式化U盘！！！！所有如果U盘有什么重要内容，一定要备份好哦！！！！然后点击继续">4.这里会提醒我们<code>格式化U盘</code>！！！！所有如果U盘有什么重要内容，一定要备份好哦！！！！然后点击继续</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151124_3.jpg" alt="image"></p>
+<h4 id="5-然后就是默默等待吧，估计要30分钟左右吧,过程中如果出现下载失败的情况，就只能从头再来了">5.然后就是默默等待吧，估计要30分钟左右吧,过程中如果出现下载失败的情况，就只能从头再来了</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151124_5.jpg" alt="image"></p>
+<p>安装过程中出现如下图的话，输入你的用户密码即可</p>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_9.jpg" alt="image"></p>
+<h4 id="6-等待结束后，出现如下图内容">6.等待结束后，出现如下图内容</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_11.jpg" alt="image"></p>
+<h5 id="点击红色方框标记的区域分配Windows硬盘大小">点击红色方框标记的区域分配Windows硬盘大小</h5><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_16.jpg" alt="image"></p>
+<h5 id="这里分配的大小最好不小于30G,不然后面安装windows的话，会出现硬盘过小，无法安装的情况">这里分配的大小最好不小于30G,不然后面安装windows的话，会出现硬盘过小，无法安装的情况</h5><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_10.jpg" alt="image"></p>
+<h5 id="分区完毕后，点击安装，默默等待。安装好后机器就会重启,没有重启的话请自己重启吧">分区完毕后，点击安装，默默等待。安装好后机器就会重启,没有重启的话请自己重启吧</h5><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_17.jpg" alt="image"></p>
+<h4 id="6-在这里我就碰到了第一个问题，重启之后，竟然又是打开了Mac的系统，完全没有进入Windows的安装界面啊？！">6.在这里我就碰到了第一个问题，重启之后，竟然又是打开了Mac的系统，完全没有进入Windows的安装界面啊？！</h4><h4 id="（╯’_-_‘)╯︵_┻━┻_（掀桌子）_┬─┬_ノ(_‘_-_‘ノ)_{摆好摆好）_(╯°Д°)╯︵_┻━┻(再他妈的掀一次）">（╯’ - ‘)╯︵ ┻━┻ （掀桌子） ┬─┬ ノ( ‘ - ‘ノ) {摆好摆好） (╯°Д°)╯︵ ┻━┻(再他妈的掀一次）</h4><p>这里我当时查了资料之后，是这么处理的:</p>
+<ul>
+<li>重启机器</li>
+<li>在听到开机声音之后，等大概2-3秒之后，长按option键，进入如下图所示界面(没有进来的话，就再重启找感觉吧<br>( •̀ .̫ •́ )✧)</li>
+<li>选择EFI Boot，回车(应该是这个分区，当时忘记拍照了，反正就是在Macintosh HD旁边的那个就对了)</li>
+</ul>
+<p>PS:这张图是我安装好系统之后才照的，装好之后就出现Windows那个分区了，没装的时候是没有的</p>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125132644.jpg" alt="image"></p>
+<h4 id="7-等待启动进入安装页面">7.等待启动进入安装页面</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125125919.jpg" alt="image"></p>
+<h4 id="8-按顺序操作后进入如下界面(原谅我的渣技术和渣画质),选择BOOTCAMP，会看到无法在分区4上面安装Windows,然后点击格式化，跳出弹出点击确认">8.按顺序操作后进入如下界面(原谅我的渣技术和渣画质),选择BOOTCAMP，会看到无法在分区4上面安装Windows,然后点击格式化，跳出弹出点击确认</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125130129.jpg" alt="image"></p>
+<h4 id="9-格式化后选择分区4，点击下一步，进入安装界面，等待安装，之后就会重启了，重启之后进入个性化设置，这里就不赘述了">9.格式化后选择分区4，点击下一步，进入安装界面，等待安装，之后就会重启了，重启之后进入个性化设置，这里就不赘述了</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125130201.jpg" alt="image"></p>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125130319.jpg" alt="image"></p>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125130911.jpg" alt="image"></p>
+<h4 id="10-进入系统后，会发现无法连接网络，各种驱动基本也是没有的">10.进入系统后，会发现无法连接网络，各种驱动基本也是没有的</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_6.JPG" alt="image"></p>
+<p>接下来我们就来安装驱动网卡什么的，炒鸡简单，但是没人提醒话也够折腾了( Ĭ ^ Ĭ ),好吧，你们机智，轻松搞定了</p>
+<ul>
+<li>command+E打开我的电脑</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_1.jpg" alt="image"></p>
+<ul>
+<li>选择D盘</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_2.jpg" alt="image"></p>
+<ul>
+<li>选择BootCamp文件夹</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_3.jpg" alt="image"></p>
+<ul>
+<li>点击setup安装吧</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_4.jpg" alt="image"></p>
+<ul>
+<li>安装重启之后，网卡就OK啦</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_5.JPG" alt="image"></p>
+<h4 id="11-如果想回到Mac下，重装之后会有如图所示的一个图标，右击选择在在OS_X中重新启动就可以了">11.如果想回到Mac下，重装之后会有如图所示的一个图标，右击选择在在OS X中重新启动就可以了</h4><p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_IMG20151125134404.jpg" alt="image"></p>
+<h4 id="12-回到Mac下，如果到Windows的话，是介个样子的,打开系统偏好设置">12.回到Mac下，如果到Windows的话，是介个样子的,打开系统偏好设置</h4><ul>
+<li>点击启动磁盘</li>
+</ul>
+<p><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_4.jpg" alt="image"></p>
+<ul>
+<li>选择BOOTCAMP，点击重新启动，就OK啦<br><img src="http://7xomvh.com1.z0.glb.clouddn.com/hexo_Snip20151125_5.jpg" alt="image"></li>
+</ul>
+<p>大概东西应该就这么多了，按着这个来，应该不会出什么问题的。如果有朋友知道Parallels Desktop虚拟机怎么跟别的机子通信的话，希望能发邮件告诉我哈，如果你允许的话，我也会转载出来，给大家学习的！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E-mail:dev.shijun@gmail.com</span><br></pre></td></tr></table></figure>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/06/一些记录吧/" itemprop="url">
+                  一些记录吧
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-11-06T09:12:52+08:00" content="2015-11-06">
+              2015-11-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/生活/" itemprop="url" rel="index">
+                    <span itemprop="name">生活</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>这是在读《少有人走的路》中读到的诗人纪伯纶的诗，就此记录下来吧，用于以后提醒自己:</p>
+<p>你有儿女，其实不是你的儿女。</p>
+<p>他们是生命对于自身渴望而诞生的孩子。</p>
+<p>他们借助你来到这世界，却非因你而来，</p>
+<p>他们在你身旁，却并不属于你。</p>
+<p>你可以给予他们的是你的爱，却不是你的想法，</p>
+<p>因为他们有自己的思想。</p>
+<p>你可以庇护的是他们的身体，却不是他们的灵魂，</p>
+<p>因为他们的灵魂属于明天，属于你做梦也无法达到的明天，</p>
+<p>你可以拼尽全力，变得像他们一样，</p>
+<p>却不要让他们变得和你一样，</p>
+<p>因为生命不会后退，也不在过去停留。</p>
+<p>你是弓,儿女是从你那里射出的箭。</p>
+<p>弓箭手望着未来之路上的箭靶，</p>
+<p>他用尽力气将你拉开，使他的箭射得又快又远。</p>
+<p>怀着快乐的心情，在弓箭手的手中弯曲吧，</p>
+<p>因为他爱一路飞翔的箭，也爱无比稳定的弓。</p>
+<p>——————————————我是分割线——————————————</p>
+<p>你们的结合要保留空隙，<br>让来自天堂的风在你们的空隙之间舞动。</p>
+<p>爱一个人不等于用爱把对方束缚起来，<br>爱的最高境界就像你们灵魂两岸之间一片流动的海洋。<br>倒满各自的酒杯，但不可共饮同一杯酒，<br>分享面包，但不可吃同一片面包。</p>
+<p>一起欢快地歌唱、舞蹈，<br>但容许对方有独处的自由，<br>就像那琴弦，<br>虽然一起颤动，发出的却不是同一种音，<br>琴弦之间，你是你，我是我，彼此各不相扰。</p>
+<p>一定要把心扉向对方敞开，但并不是交给对方来保管，<br>因为唯有上帝之手，才能容纳你的心。<br>站在一起，却不可太过接近，<br>君不见，教堂的梁柱，它们各自分开耸立，却能支撑教堂不倒。<br>君不见，橡树与松柏，也不在彼此的阴影中成长。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
