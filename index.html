@@ -199,15 +199,107 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/16/在本地有MySQL的情况下，如何使用MAMP的数据库/" itemprop="url">
+                  在本地有MySQL的情况下，如何使用MAMP的数据库
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-03-16T14:28:07+08:00" content="2016-03-16">
+              2016-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Mac/" itemprop="url" rel="index">
+                    <span itemprop="name">Mac</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
       
-        
-        
-        
       
 
       
-    
+        
+          <span itemprop="articleBody">
+            
+              <p>由于项目需要用到ecshop,而我们都知道它最多只能支持到PHP5.2的版本，再往高版本的话，各种警告。而无论是Mac自带的PHP和我通过brew安装的PHP版本，都已经比它高很多了。那我们如何解决这个尴尬的局面呢，同时不影响本机的环境。本来我是想通过搭一个虚拟机结局的 但感觉挺麻烦的，又要做一套环境，做过环境的朋友知道，好痛！！！ (╯‵□′)╯︵┻━┻<br>作为一个懒人呢，突然想起了当年刚拿到Mac那会，各种乱折腾软件，里面有个MAMP的PHP集成环境软件。那么作为一个想要成为NB攻城狮的男人，我当初当然放弃了它，自己找虐选择自己编译一个。而它呢，就是Mac下的phpStudy。可以选择你想要的任何PHP版本。</p>
+<p>这款软件呢是收费的，但在国内嘛，大家自己搞定吧！安装完毕之后，如果你跟我一样，也是本地已经安装了MySQL了，那么在start环境之后stop环境，就会发现Mysql报错无法关闭之类的意思，具体说什么忘了，应该有这两种情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysqld_safe mysqld from pid file /Applications/MAMP/tmp/mysql/mysql.pid ended</span><br><span class="line"></span><br><span class="line">Version: <span class="string">'5.5.42'</span>  socket: <span class="string">'/Applications/MAMP/tmp/mysql/mysql.sock'</span>  port: <span class="number">0</span>  Source distribution</span><br></pre></td></tr></table></figure>
+<p>我的理解应该就是两个MySQL的配置文件出现了错误，本地的MySQL配置文件是/etc/my.conf,MAMP的配置文件则是/Applications/MAMP/tmp/mysql/my.conf，所以处理方式也就很简单，需要使用MAMP的时候，将本地的MySQL关闭，并配置文件/etc/my.conf修改下名字就可以了。当然，你后面要用本地的MySQL了，修改回来就可以了。</p>
+<p>接着我就想用Navicat操作MySQL，发现又出了问题，明明端口密码什么的都是正确的，就是无法连接。这里呢，还有一个选项需要我们设置。<br><img src="http://7xomvh.com1.z0.glb.clouddn.com/MySQL_New_small.jpg" alt="image"></p>
+<p>勾选Use socket file并填入/Applications/MAMP/tmp/mysql/mysql.sock，这样应该就可以通过Navicat访问MAMP的MySQL了。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -911,7 +1003,7 @@ dogsCounter.display();    // ERROR!!!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -925,7 +1017,7 @@ dogsCounter.display();    // ERROR!!!
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

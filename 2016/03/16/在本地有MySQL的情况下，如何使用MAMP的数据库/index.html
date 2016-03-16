@@ -37,7 +37,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Mac,PHP7," />
+  <meta name="keywords" content="Mac,MySQL," />
 
 
 
@@ -53,16 +53,17 @@
 
 
 
-<meta name="description" content="写之前先啰嗦几句吧，其实这段东西前几天就应该写出来了，但就在我想写的第二天，我成功被公司开了。我觉得跟我的个人能力应该没有什么直接的关系，可能还是跟现在的领导做事风格差异的问题吧。现在的领导就喜欢开立项评估会，然后是评审会，这两个东西前前后后一个项目开始能费一个月的时间，搞的真是心里憔悴。然后更大的领导要东西的时候，我们哪有时间开发，于是就觉得我们能力有问题，可问题是，开发和这些乱七八糟的东西，都">
+<meta name="description" content="由于项目需要用到ecshop,而我们都知道它最多只能支持到PHP5.2的版本，再往高版本的话，各种警告。而无论是Mac自带的PHP和我通过brew安装的PHP版本，都已经比它高很多了。那我们如何解决这个尴尬的局面呢，同时不影响本机的环境。本来我是想通过搭一个虚拟机结局的 但感觉挺麻烦的，又要做一套环境，做过环境的朋友知道，好痛！！！ (╯‵□′)╯︵┻━┻作为一个懒人呢，突然想起了当年刚拿到Mac">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP7编译Error:Cannot find libz">
-<meta property="og:url" content="http://www.echophper.com/2016/01/31/PHP7编译Error-Cannot-find-libz/index.html">
+<meta property="og:title" content="在本地有MySQL的情况下，如何使用MAMP的数据库">
+<meta property="og:url" content="http://www.echophper.com/2016/03/16/在本地有MySQL的情况下，如何使用MAMP的数据库/index.html">
 <meta property="og:site_name" content="Echo's Notes">
-<meta property="og:description" content="写之前先啰嗦几句吧，其实这段东西前几天就应该写出来了，但就在我想写的第二天，我成功被公司开了。我觉得跟我的个人能力应该没有什么直接的关系，可能还是跟现在的领导做事风格差异的问题吧。现在的领导就喜欢开立项评估会，然后是评审会，这两个东西前前后后一个项目开始能费一个月的时间，搞的真是心里憔悴。然后更大的领导要东西的时候，我们哪有时间开发，于是就觉得我们能力有问题，可问题是，开发和这些乱七八糟的东西，都">
-<meta property="og:updated_time" content="2016-01-31T15:57:25.000Z">
+<meta property="og:description" content="由于项目需要用到ecshop,而我们都知道它最多只能支持到PHP5.2的版本，再往高版本的话，各种警告。而无论是Mac自带的PHP和我通过brew安装的PHP版本，都已经比它高很多了。那我们如何解决这个尴尬的局面呢，同时不影响本机的环境。本来我是想通过搭一个虚拟机结局的 但感觉挺麻烦的，又要做一套环境，做过环境的朋友知道，好痛！！！ (╯‵□′)╯︵┻━┻作为一个懒人呢，突然想起了当年刚拿到Mac">
+<meta property="og:image" content="http://7xomvh.com1.z0.glb.clouddn.com/MySQL_New_small.jpg">
+<meta property="og:updated_time" content="2016-03-16T06:32:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PHP7编译Error:Cannot find libz">
-<meta name="twitter:description" content="写之前先啰嗦几句吧，其实这段东西前几天就应该写出来了，但就在我想写的第二天，我成功被公司开了。我觉得跟我的个人能力应该没有什么直接的关系，可能还是跟现在的领导做事风格差异的问题吧。现在的领导就喜欢开立项评估会，然后是评审会，这两个东西前前后后一个项目开始能费一个月的时间，搞的真是心里憔悴。然后更大的领导要东西的时候，我们哪有时间开发，于是就觉得我们能力有问题，可问题是，开发和这些乱七八糟的东西，都">
+<meta name="twitter:title" content="在本地有MySQL的情况下，如何使用MAMP的数据库">
+<meta name="twitter:description" content="由于项目需要用到ecshop,而我们都知道它最多只能支持到PHP5.2的版本，再往高版本的话，各种警告。而无论是Mac自带的PHP和我通过brew安装的PHP版本，都已经比它高很多了。那我们如何解决这个尴尬的局面呢，同时不影响本机的环境。本来我是想通过搭一个虚拟机结局的 但感觉挺麻烦的，又要做一套环境，做过环境的朋友知道，好痛！！！ (╯‵□′)╯︵┻━┻作为一个懒人呢，突然想起了当年刚拿到Mac">
 
 
 
@@ -74,7 +75,7 @@
   };
 </script>
 
-  <title> PHP7编译Error:Cannot find libz | Echo's Notes </title>
+  <title> 在本地有MySQL的情况下，如何使用MAMP的数据库 | Echo's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -214,7 +215,7 @@
             
             
               
-                PHP7编译Error:Cannot find libz
+                在本地有MySQL的情况下，如何使用MAMP的数据库
               
             
           </h1>
@@ -223,8 +224,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-01-31T23:49:15+08:00" content="2016-01-31">
-              2016-01-31
+            <time itemprop="dateCreated" datetime="2016-03-16T14:28:07+08:00" content="2016-03-16">
+              2016-03-16
             </time>
           </span>
 
@@ -233,8 +234,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
+                  <a href="/categories/Mac/" itemprop="url" rel="index">
+                    <span itemprop="name">Mac</span>
                   </a>
                 </span>
 
@@ -262,16 +263,12 @@
       
 
       
-        <span itemprop="articleBody"><p>写之前先啰嗦几句吧，其实这段东西前几天就应该写出来了，但就在我想写的第二天，我成功被公司开了。我觉得跟我的个人能力应该没有什么直接的关系，可能还是跟现在的领导做事风格差异的问题吧。现在的领导就喜欢开立项评估会，然后是评审会，这两个东西前前后后一个项目开始能费一个月的时间，搞的真是心里憔悴。然后更大的领导要东西的时候，我们哪有时间开发，于是就觉得我们能力有问题，可问题是，开发和这些乱七八糟的东西，都是我们一个人做，你当我们是神吗？！！！哎，吐槽完毕，下面正题吧。</p>
-<p>之前我的Mac一直用的都是XAMPP的集成环境，可最近开始需要用一些新的拓展了，而且感觉也是时候开始学习使用Nginx了，所以就觉得配置一套自己的环境吧！而就在使用<code>brew install php70 --with-fpm --with-gmp --with-imap --with-tidy --with-debug --with-mysql --with-libmysql</code>安装编译PHP7的时候，碰到了这么个问题:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">checking <span class="keyword">if</span> the location of ZLIB install directory is defined... no</span><br><span class="line">configure: error: Cannot find libz</span><br></pre></td></tr></table></figure>
-<p>然后我就去google了，github上面给出了如下方法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">安装Xcode7然后使用命令行工具</span><br><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>本以为这么搞就OK了，可再次编译PHP7还是报如上问题，而且查看<code>brew list</code> zlib我也是安装的啊，为什么就是不行呢？哈，其实我也不太懂这些啦，自己的猜想也就是brew安装的zlib没有进入环境变量，所以需要调用的时候没有查找它吧。那下面就来看看如果解决吧，其实也就是让它被找到呗。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -O http://zlib.net/zlib-<span class="number">1.2</span>.<span class="number">8</span>.tar.gz</span><br><span class="line">sudo tar -zxvf zlib-<span class="number">1.2</span>.<span class="number">8</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> zlib-<span class="number">1.2</span>.<span class="number">8</span>/</span><br><span class="line">sudo ./configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<p>是的，我是不会修改环境变量什么的，所有就交给安装编译自己来实现了。这样zlib安装就搞了，Mac也能找到它了。但是如果我们此时重新编译PHP7，会发现还是报上面的错误。而这个时候，我们需要再执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>嗯，这样就大功告成了。查遍了谷歌愣是没有给出我这种结局方案，自己搞了一个下午，也真是不容易啊！</p>
+        <span itemprop="articleBody"><p>由于项目需要用到ecshop,而我们都知道它最多只能支持到PHP5.2的版本，再往高版本的话，各种警告。而无论是Mac自带的PHP和我通过brew安装的PHP版本，都已经比它高很多了。那我们如何解决这个尴尬的局面呢，同时不影响本机的环境。本来我是想通过搭一个虚拟机结局的 但感觉挺麻烦的，又要做一套环境，做过环境的朋友知道，好痛！！！ (╯‵□′)╯︵┻━┻<br>作为一个懒人呢，突然想起了当年刚拿到Mac那会，各种乱折腾软件，里面有个MAMP的PHP集成环境软件。那么作为一个想要成为NB攻城狮的男人，我当初当然放弃了它，自己找虐选择自己编译一个。而它呢，就是Mac下的phpStudy。可以选择你想要的任何PHP版本。</p>
+<p>这款软件呢是收费的，但在国内嘛，大家自己搞定吧！安装完毕之后，如果你跟我一样，也是本地已经安装了MySQL了，那么在start环境之后stop环境，就会发现Mysql报错无法关闭之类的意思，具体说什么忘了，应该有这两种情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysqld_safe mysqld from pid file /Applications/MAMP/tmp/mysql/mysql.pid ended</span><br><span class="line"></span><br><span class="line">Version: <span class="string">'5.5.42'</span>  socket: <span class="string">'/Applications/MAMP/tmp/mysql/mysql.sock'</span>  port: <span class="number">0</span>  Source distribution</span><br></pre></td></tr></table></figure>
+<p>我的理解应该就是两个MySQL的配置文件出现了错误，本地的MySQL配置文件是/etc/my.conf,MAMP的配置文件则是/Applications/MAMP/tmp/mysql/my.conf，所以处理方式也就很简单，需要使用MAMP的时候，将本地的MySQL关闭，并配置文件/etc/my.conf修改下名字就可以了。当然，你后面要用本地的MySQL了，修改回来就可以了。</p>
+<p>接着我就想用Navicat操作MySQL，发现又出了问题，明明端口密码什么的都是正确的，就是无法连接。这里呢，还有一个选项需要我们设置。<br><img src="http://7xomvh.com1.z0.glb.clouddn.com/MySQL_New_small.jpg" alt="image"></p>
+<p>勾选Use socket file并填入/Applications/MAMP/tmp/mysql/mysql.sock，这样应该就可以通过Navicat访问MAMP的MySQL了。</p>
 </span>
       
     </div>
@@ -282,7 +279,7 @@
           
             <a href="/tags/Mac/" rel="tag">#Mac</a>
           
-            <a href="/tags/PHP7/" rel="tag">#PHP7</a>
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
           
         </div>
       
@@ -291,17 +288,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/22/关于闭包/" rel="next" title="关于闭包">
-                <i class="fa fa-chevron-left"></i> 关于闭包
+              <a href="/2016/01/31/PHP7编译Error-Cannot-find-libz/" rel="next" title="PHP7编译Error:Cannot find libz">
+                <i class="fa fa-chevron-left"></i> PHP7编译Error:Cannot find libz
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/16/在本地有MySQL的情况下，如何使用MAMP的数据库/" rel="prev" title="在本地有MySQL的情况下，如何使用MAMP的数据库">
-                在本地有MySQL的情况下，如何使用MAMP的数据库 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
