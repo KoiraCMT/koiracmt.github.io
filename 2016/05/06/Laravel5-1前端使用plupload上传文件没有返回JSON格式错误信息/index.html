@@ -37,7 +37,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Echo Blog" />
+  <meta name="keywords" content="JavaScript,Laravel,plupload," />
 
 
 
@@ -53,15 +53,18 @@
 
 
 
-<meta name="description" content="我们每天度过的称之为日常的生活，其实是一个个奇迹的连续也说不定">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Echo's Notes">
-<meta property="og:url" content="http://www.echophper.com/index.html">
+<meta name="description" content="昨天使用plupload插件上传文件的时候，向Laravel提交文件后，希望能获得一些错误信息，但发现不太如愿，前后那个折腾啊，本身又没有可以商量的同事，只能自己各种google,可能也是自己的描述问题吧，并不能找到和自己问题相关答案，不废话了，自己上图了：12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel5.1前端使用plupload上传文件没有返回JSON格式错误信息">
+<meta property="og:url" content="http://www.echophper.com/2016/05/06/Laravel5-1前端使用plupload上传文件没有返回JSON格式错误信息/index.html">
 <meta property="og:site_name" content="Echo's Notes">
-<meta property="og:description" content="我们每天度过的称之为日常的生活，其实是一个个奇迹的连续也说不定">
+<meta property="og:description" content="昨天使用plupload插件上传文件的时候，向Laravel提交文件后，希望能获得一些错误信息，但发现不太如愿，前后那个折腾啊，本身又没有可以商量的同事，只能自己各种google,可能也是自己的描述问题吧，并不能找到和自己问题相关答案，不废话了，自己上图了：12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:image" content="http://7xomvh.com1.z0.glb.clouddn.com/plupload_error.jpg">
+<meta property="og:image" content="http://7xomvh.com1.z0.glb.clouddn.com/plupload_error_right.jpg">
+<meta property="og:updated_time" content="2016-05-06T02:18:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Echo's Notes">
-<meta name="twitter:description" content="我们每天度过的称之为日常的生活，其实是一个个奇迹的连续也说不定">
+<meta name="twitter:title" content="Laravel5.1前端使用plupload上传文件没有返回JSON格式错误信息">
+<meta name="twitter:description" content="昨天使用plupload插件上传文件的时候，向Laravel提交文件后，希望能获得一些错误信息，但发现不太如愿，前后那个折腾啊，本身又没有可以商量的同事，只能自己各种google,可能也是自己的描述问题吧，并不能找到和自己问题相关答案，不废话了，自己上图了：12345678910111213141516171819202122232425262728293031323334353637383940">
 
 
 
@@ -73,7 +76,7 @@
   };
 </script>
 
-  <title> Echo's Notes </title>
+  <title> Laravel5.1前端使用plupload上传文件没有返回JSON格式错误信息 | Echo's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -94,9 +97,7 @@
 
 
 
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -193,24 +194,9 @@
       <div class="main-inner">
         <div id="content" class="content">
           
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
 
   
   
@@ -230,10 +216,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/05/06/Laravel5-1前端使用plupload上传文件没有返回JSON格式错误信息/" itemprop="url">
-                  Laravel5.1前端使用plupload上传文件没有返回JSON格式错误信息
-                </a>
+                Laravel5.1前端使用plupload上传文件没有返回JSON格式错误信息
               
             
           </h1>
@@ -281,10 +264,7 @@
       
 
       
-        
-          <span itemprop="articleBody">
-            
-              <p>昨天使用plupload插件上传文件的时候，向Laravel提交文件后，希望能获得一些错误信息，但发现不太如愿，前后那个折腾啊，本身又没有可以商量的同事，只能自己各种google,可能也是自己的描述问题吧，并不能找到和自己问题相关答案，不废话了，自己上图了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">    &lt;button id=<span class="string">"browse"</span>&gt;选择文件&lt;/button&gt;</span><br><span class="line">    &lt;button id=<span class="string">"start_upload"</span>&gt;开始上传&lt;/button&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;script src=<span class="string">"//cdn.bootcss.com/plupload/2.1.8/plupload.full.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    var uploader = new plupload.Uploader(</span><br><span class="line">    &#123;</span><br><span class="line">        browse_button: <span class="string">'browse'</span>,</span><br><span class="line">        url:<span class="string">'&#123;&#123; URL::to('</span>/api/upload<span class="string">') &#125;&#125;'</span>,</span><br><span class="line">        filters:</span><br><span class="line">        &#123;</span><br><span class="line">            mime_types :</span><br><span class="line">            [</span><br><span class="line">                &#123; title : <span class="string">"Image files"</span>, extensions : <span class="string">"jpg,gif,png,jpeg,svg"</span> &#125;,</span><br><span class="line">                &#123; title : <span class="string">"Zip files"</span>, extensions : <span class="string">"zip,rar"</span> &#125;</span><br><span class="line">            ],</span><br><span class="line">            max_file_size : <span class="string">'3mb'</span>,</span><br><span class="line">            prevent_duplicates : <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        multipart_params:</span><br><span class="line">        &#123;</span><br><span class="line">            _token: <span class="string">'&#123;&#123; csrf_token() &#125;&#125;'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        file_data_name: <span class="string">'img'</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    uploader.init();</span><br><span class="line"></span><br><span class="line">    uploader.bind(<span class="string">'FileUploaded'</span>,<span class="keyword">function</span>(uploader,files,result)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(result);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    uploader.bind(<span class="string">'Error'</span>,<span class="keyword">function</span>(uploader,errObject)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(errObject);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    document.getElementById(<span class="string">'start_upload'</span>).onclick = <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">        uploader.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+        <span itemprop="articleBody"><p>昨天使用plupload插件上传文件的时候，向Laravel提交文件后，希望能获得一些错误信息，但发现不太如愿，前后那个折腾啊，本身又没有可以商量的同事，只能自己各种google,可能也是自己的描述问题吧，并不能找到和自己问题相关答案，不废话了，自己上图了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">    &lt;button id=<span class="string">"browse"</span>&gt;选择文件&lt;/button&gt;</span><br><span class="line">    &lt;button id=<span class="string">"start_upload"</span>&gt;开始上传&lt;/button&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;script src=<span class="string">"//cdn.bootcss.com/plupload/2.1.8/plupload.full.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    var uploader = new plupload.Uploader(</span><br><span class="line">    &#123;</span><br><span class="line">        browse_button: <span class="string">'browse'</span>,</span><br><span class="line">        url:<span class="string">'&#123;&#123; URL::to('</span>/api/upload<span class="string">') &#125;&#125;'</span>,</span><br><span class="line">        filters:</span><br><span class="line">        &#123;</span><br><span class="line">            mime_types :</span><br><span class="line">            [</span><br><span class="line">                &#123; title : <span class="string">"Image files"</span>, extensions : <span class="string">"jpg,gif,png,jpeg,svg"</span> &#125;,</span><br><span class="line">                &#123; title : <span class="string">"Zip files"</span>, extensions : <span class="string">"zip,rar"</span> &#125;</span><br><span class="line">            ],</span><br><span class="line">            max_file_size : <span class="string">'3mb'</span>,</span><br><span class="line">            prevent_duplicates : <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        multipart_params:</span><br><span class="line">        &#123;</span><br><span class="line">            _token: <span class="string">'&#123;&#123; csrf_token() &#125;&#125;'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        file_data_name: <span class="string">'img'</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    uploader.init();</span><br><span class="line"></span><br><span class="line">    uploader.bind(<span class="string">'FileUploaded'</span>,<span class="keyword">function</span>(uploader,files,result)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(result);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    uploader.bind(<span class="string">'Error'</span>,<span class="keyword">function</span>(uploader,errObject)</span><br><span class="line">    &#123;</span><br><span class="line">        console.log(errObject);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    document.getElementById(<span class="string">'start_upload'</span>).onclick = <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">        uploader.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
 <p>后端代码</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App\Http\Controllers\Api;</span><br><span class="line"></span><br><span class="line">use App\User;</span><br><span class="line">use Cache;</span><br><span class="line">use Carbon\Carbon;</span><br><span class="line">use Illuminate\Http\Request;</span><br><span class="line">use App\Http\Requests;</span><br><span class="line">use App\Http\Controllers\Controller;</span><br><span class="line">use Illuminate\Http\Response;</span><br><span class="line"></span><br><span class="line">class UploadFileController extends Controller</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">function</span> <span class="function"><span class="title">upload</span></span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">return</span> view(<span class="string">'upload'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * ajax上传图片</span><br><span class="line">     * @param Request <span class="variable">$request</span></span><br><span class="line">     */</span><br><span class="line">    public <span class="keyword">function</span> ajaxUpload(Request <span class="variable">$request</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;validate(<span class="variable">$request</span>,</span><br><span class="line">            [</span><br><span class="line">                <span class="string">'img'</span>=&gt; <span class="string">'image|max:1024*1024*3'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>根据官方文档表单验证所说，当我们在 AJAX 的请求中使用 validate 方法时，Laravel 并不会像传统的提交表单的方式生成一个重定向响应，而是会生成一个包含所有错误验证的 JSON 响应。这个 JSON 响应会发送一个 422 HTTP 状态码。</p>
@@ -297,31 +277,50 @@
 <p>修改之后，我再上传了一次非图片文件：<br><img src="http://7xomvh.com1.z0.glb.clouddn.com/plupload_error_right.jpg" alt="img"></p>
 <p>如果所示，终于拿到了自己想要的错误信息。</p>
 <p>这次的错误其实应该算是不太复杂的，但前后还是浪费了我2-3个小时，究其原因，还是Laravel使用的不够熟练，很多机制现在还是不是很明白，官方文档平时还是要多翻翻的。然后也再次感觉到了读源码的重要性，真的能从别人身上快速的找到解决办法的。</p>
-
-            
-          </span>
-        
+</span>
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/Laravel/" rel="tag">#Laravel</a>
+          
+            <a href="/tags/plupload/" rel="tag">#plupload</a>
+          
+        </div>
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/16/在本地有MySQL的情况下，如何使用MAMP的数据库/" rel="next" title="在本地有MySQL的情况下，如何使用MAMP的数据库">
+                <i class="fa fa-chevron-left"></i> 在本地有MySQL的情况下，如何使用MAMP的数据库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
 
-  </section>
-
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
         </div>
@@ -330,6 +329,10 @@
 
 
         
+  <div class="comments" id="comments">
+    
+  </div>
+
 
       </div>
 
@@ -350,8 +353,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" src="/images/avatar.jpg" alt="Echo Chiang" itemprop="image"/>
           <p class="site-author-name" itemprop="name">Echo Chiang</p>
@@ -396,6 +408,23 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -466,6 +495,167 @@
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   <script type="text/javascript" src="/js/bootstrap.js"></script>
 
