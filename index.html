@@ -199,15 +199,6 @@
 
     
     
-      
-      
-        
-        
-        
-      
-
-      
-    
 
     
       
@@ -618,6 +609,288 @@
 <p>是的，我是不会修改环境变量什么的，所有就交给安装编译自己来实现了。这样zlib安装就搞了，Mac也能找到它了。但是如果我们此时重新编译PHP7，会发现还是报上面的错误。而这个时候，我们需要再执行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
 <p>嗯，这样就大功告成了。查遍了谷歌愣是没有给出我这种结局方案，自己搞了一个下午，也真是不容易啊！</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/22/关于闭包/" itemprop="url">
+                  关于闭包
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-22T17:04:21+08:00" content="2015-12-22">
+              2015-12-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 </p>
+<h3 id="计数事件">计数事件</h3><pre><code class="bash">increment();  //Number of events:<span class="number">1</span>
+
+increment();  //Number of events:<span class="number">2</span>
+
+increment();  //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上面的代码中会在我们每次执行increment()函数时，显示一条信息“Number of events:x”。下面是这个函数的简单实现：  </p>
+<pre><code class="bash">var counter = <span class="number">0</span>;
+
+<span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+    counter = counter + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span> + conunter);
+}
+</code></pre>
+<h3 id="多个计数器">多个计数器</h3><p>上述代码非常简单明了。然而，当我们引入第二个计数器时，就会很快遇到问题。当然，我们能实现两个单独的计数器机制，如下面的代码，但很明显我们有需要改进它的地方：  </p>
+<pre><code class="bash">var counter1 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter1</span></span>(){
+    counter1 = counter1 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter1);
+}
+
+var counter2 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter2</span></span>(){
+    counter2 = counter2 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter2);
+}
+
+incrementCounter1();   //Number of events:<span class="number">1</span>
+incrementCounter2();   //Number of events:<span class="number">1</span>
+incrementCounter1();   //Number of events:<span class="number">2</span>
+</code></pre>
+<p>上述代码出现了不必要的重复。明显的，这种解决方案并不适用于超过二个或三个计数器的情况。我们需要找出更好的解决方案。  </p>
+<h3 id="引入第一个闭包">引入第一个闭包</h3><p>在与上述例子相似的情况下，我们以新的方式引入计数器，该计数器捆绑了一个能自增的函数，而且没有大量重复的代码。    </p>
+<pre><code class="bash"><span class="keyword">function</span> <span class="function"><span class="title">createCounter</span></span>(){
+
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of events: '</span>+counter); 
+    }
+    <span class="built_in">return</span> incrememt;
+}
+</code></pre>
+<p>接下来让我看看这段代码是如何工作的。我们将创建两个计数器，并让它们跟踪两个独立事件：    </p>
+<pre><code class="bash">var counter1 = createCounter();
+var counter2 = createCounter();
+
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+counter2();   //Number of events:<span class="number">1</span>
+
+counter1();   //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上述代码变的有些复杂了，其实还是很简单的，这里我们将实现逻辑分成几个易于理解的块，来看看我们实现了什么：  </p>
+<ul>
+<li>首先，创建了一个名为counter的局部变量。</li>
+<li>然后，创建了一个名为increment()的局部函数，它能增加increment的变量值。<br>你应该注意到了，createCounter()的实现与我们原先的计数器实现几乎一致。唯一不同的是它被包装或封装在一个函数体内。因此，这些构造函数被称为<strong><em>闭包</em></strong>。  </li>
+</ul>
+<p>现在是棘手的部分：  </p>
+<ul>
+<li>在createCounter的最后一步返回了局部函数increment。请注意，这并不是返回调用函数的运行结果，而是函数本身。</li>
+</ul>
+<p>这就意味着，当我们在这个代码下面创建新的计数器时，实际上是生成了一个新的函数。    </p>
+<pre><code class="bash">//fancyNewCounter 是当前作用域的一个函数
+var fancyNewCounter = createCounter();
+</code></pre>
+<p>这就是闭包生命周期的力量所在。每个生成的函数，都会保持在createCounter()所创建的counter变量的引用。在某种意义上，被返回的函数记住了它所被创建时的环境。<br>在这里需要提醒大家注意的，内部变量counter都是独立于存在于每个作用域！例如，如果我们创建两个计时器，那么它们都会在闭包内分配一个新的counter变量。我们观察以下代码：  </p>
+<p>每个计数器都会从1算起    </p>
+<pre><code class="bash">var counter1 = createCounter();
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+var counter2 = createCounter();
+counter2();   //Number of events:<span class="number">1</span>
+</code></pre>
+<p>第二个计数器并不会干扰第一个计数器的值：   </p>
+<pre><code class="bash">counter1();   // Number of events:<span class="number">3</span>
+</code></pre>
+<h3 id="为我们的计数器命名">为我们的计数器命名</h3><p>信息“Number of evnents:x” 是没问题的，但如果能描述每个计数事件的类型，那么这将会更好。以下例子，我们为计数器添加名字：  </p>
+<pre><code class="bash">var catCounter = createCounter(<span class="string">'cat'</span>);
+var dogCounter = createCounter(<span class="string">'dog'</span>);
+
+catCounter();   //Number of cats:<span class="number">1</span>
+catCounter();   //Number of cats:<span class="number">2</span>
+dogCounter();   //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>我们只要为闭包传递参数就能达到目的：</p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+    <span class="built_in">return</span> increment;
+}
+</code></pre>
+<p>请注意上述createCounter()函数的一个有趣行为。返回函数不仅记住了局部变量counter,而且记住了传递进来的参数。  </p>
+<h3 id="改善公用接口">改善公用接口</h3><p>我所说的公用接口是指，我们如何使用计数器。这并不是单纯指，当被创建的计数器被调用时会增加值。</p>
+<pre><code class="bash">var dogCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogCounter.increment();  //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>让我们创建这样一个实现：</p>
+<pre><code class="bash"><span class="keyword">function</span> CreateCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="built_in">return</span> {increment:increment};
+}
+</code></pre>
+<p>在上述代码中，我们简单返回一个对象，该对象包含了该闭包的所有功能。在某种意义下，我们能定义闭包能返回的一系列信息。   </p>
+<h3 id="增加一个减量">增加一个减量</h3><p>现在，我们能非常简单的为计数器引入减量(decrement)。     </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">": "</span> + counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();  // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();  // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();  // Number of dogs: <span class="number">3</span>
+</code></pre>
+<h3 id="隐藏计数器行为">隐藏计数器行为</h3><p>上述代码还是有写冗余的代码行，没错，就是console.log()。如果能创建一个专门用于显示计数器值的函数将会更好。让我们调用display函数。  </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">display</span></span>(){
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+        display();
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+        display();
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();   // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();   // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();   // Number of dogs: <span class="number">1</span>
+</code></pre>
+<p>display()和increment()、decrement()不同，因为它没有被返回，所以无法调用。这意味着以下代码调用会失败：</p>
+<pre><code class="bash">var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.display();    // ERROR!!!
+</code></pre>
+<p>我们让display()函数对外部来说是不可见的。它仅在createCounter()内可见。  </p>
+<h3 id="闭包与面向对象编程">闭包与面向对象编程</h3><p>正如我在一开始说的，闭包的感觉给我感觉就像类一样，实例化、私有/公有方法，都会将一些能操作内部数据的函数联系在一起。因此，你能在任何地方像使用对象一样使用闭包。 </p>
 
             
           </span>
