@@ -1,0 +1,844 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+    <link href='//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 
+计数事件increment();  //Number of events:1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于闭包">
+<meta property="og:url" content="http://www.echophper.com/2015/12/22/关于闭包/index.html">
+<meta property="og:site_name" content="Echo's Notes">
+<meta property="og:description" content="作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 
+计数事件increment();  //Number of events:1">
+<meta property="og:updated_time" content="2016-08-19T08:53:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于闭包">
+<meta name="twitter:description" content="作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 
+计数事件increment();  //Number of events:1">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> 关于闭包 | Echo's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Echo's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于闭包
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-22T17:04:21+08:00" content="2015-12-22">
+              2015-12-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>作为一个入行不久的phper，第一次接触JavaScript的闭包概念的时候，真的感觉是不知所谓，好像很高大上的样子。不过在被这个东西困扰的时候，有幸看到一篇文章给了我答案。看完之后，给我的感觉闭包其实就是我们用的类，通过闭包封装函数，从而方便调用和防止了JS中的变量污染。这里将文章的内容记录下来，方便自己的查阅。 </p>
+<h3 id="计数事件">计数事件</h3><pre><code class="bash">increment();  //Number of events:<span class="number">1</span>
+
+increment();  //Number of events:<span class="number">2</span>
+
+increment();  //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上面的代码中会在我们每次执行increment()函数时，显示一条信息“Number of events:x”。下面是这个函数的简单实现：  </p>
+<pre><code class="bash">var counter = <span class="number">0</span>;
+
+<span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+    counter = counter + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span> + conunter);
+}
+</code></pre>
+<h3 id="多个计数器">多个计数器</h3><p>上述代码非常简单明了。然而，当我们引入第二个计数器时，就会很快遇到问题。当然，我们能实现两个单独的计数器机制，如下面的代码，但很明显我们有需要改进它的地方：  </p>
+<pre><code class="bash">var counter1 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter1</span></span>(){
+    counter1 = counter1 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter1);
+}
+
+var counter2 = <span class="number">0</span>;
+<span class="keyword">function</span> <span class="function"><span class="title">incrementCounter2</span></span>(){
+    counter2 = counter2 + <span class="number">1</span>;
+    console.log(<span class="string">'Number of events: '</span>+ counter2);
+}
+
+incrementCounter1();   //Number of events:<span class="number">1</span>
+incrementCounter2();   //Number of events:<span class="number">1</span>
+incrementCounter1();   //Number of events:<span class="number">2</span>
+</code></pre>
+<p>上述代码出现了不必要的重复。明显的，这种解决方案并不适用于超过二个或三个计数器的情况。我们需要找出更好的解决方案。  </p>
+<h3 id="引入第一个闭包">引入第一个闭包</h3><p>在与上述例子相似的情况下，我们以新的方式引入计数器，该计数器捆绑了一个能自增的函数，而且没有大量重复的代码。    </p>
+<pre><code class="bash"><span class="keyword">function</span> <span class="function"><span class="title">createCounter</span></span>(){
+
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of events: '</span>+counter); 
+    }
+    <span class="built_in">return</span> incrememt;
+}
+</code></pre>
+<p>接下来让我看看这段代码是如何工作的。我们将创建两个计数器，并让它们跟踪两个独立事件：    </p>
+<pre><code class="bash">var counter1 = createCounter();
+var counter2 = createCounter();
+
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+counter2();   //Number of events:<span class="number">1</span>
+
+counter1();   //Number of events:<span class="number">3</span>
+</code></pre>
+<p>上述代码变的有些复杂了，其实还是很简单的，这里我们将实现逻辑分成几个易于理解的块，来看看我们实现了什么：  </p>
+<ul>
+<li>首先，创建了一个名为counter的局部变量。</li>
+<li>然后，创建了一个名为increment()的局部函数，它能增加increment的变量值。<br>你应该注意到了，createCounter()的实现与我们原先的计数器实现几乎一致。唯一不同的是它被包装或封装在一个函数体内。因此，这些构造函数被称为<strong><em>闭包</em></strong>。  </li>
+</ul>
+<p>现在是棘手的部分：  </p>
+<ul>
+<li>在createCounter的最后一步返回了局部函数increment。请注意，这并不是返回调用函数的运行结果，而是函数本身。</li>
+</ul>
+<p>这就意味着，当我们在这个代码下面创建新的计数器时，实际上是生成了一个新的函数。    </p>
+<pre><code class="bash">//fancyNewCounter 是当前作用域的一个函数
+var fancyNewCounter = createCounter();
+</code></pre>
+<p>这就是闭包生命周期的力量所在。每个生成的函数，都会保持在createCounter()所创建的counter变量的引用。在某种意义上，被返回的函数记住了它所被创建时的环境。<br>在这里需要提醒大家注意的，内部变量counter都是独立于存在于每个作用域！例如，如果我们创建两个计时器，那么它们都会在闭包内分配一个新的counter变量。我们观察以下代码：  </p>
+<p>每个计数器都会从1算起    </p>
+<pre><code class="bash">var counter1 = createCounter();
+counter1();   //Number of events:<span class="number">1</span>
+counter1();   //Number of events:<span class="number">2</span>
+
+var counter2 = createCounter();
+counter2();   //Number of events:<span class="number">1</span>
+</code></pre>
+<p>第二个计数器并不会干扰第一个计数器的值：   </p>
+<pre><code class="bash">counter1();   // Number of events:<span class="number">3</span>
+</code></pre>
+<h3 id="为我们的计数器命名">为我们的计数器命名</h3><p>信息“Number of evnents:x” 是没问题的，但如果能描述每个计数事件的类型，那么这将会更好。以下例子，我们为计数器添加名字：  </p>
+<pre><code class="bash">var catCounter = createCounter(<span class="string">'cat'</span>);
+var dogCounter = createCounter(<span class="string">'dog'</span>);
+
+catCounter();   //Number of cats:<span class="number">1</span>
+catCounter();   //Number of cats:<span class="number">2</span>
+dogCounter();   //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>我们只要为闭包传递参数就能达到目的：</p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+    <span class="built_in">return</span> increment;
+}
+</code></pre>
+<p>请注意上述createCounter()函数的一个有趣行为。返回函数不仅记住了局部变量counter,而且记住了传递进来的参数。  </p>
+<h3 id="改善公用接口">改善公用接口</h3><p>我所说的公用接口是指，我们如何使用计数器。这并不是单纯指，当被创建的计数器被调用时会增加值。</p>
+<pre><code class="bash">var dogCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogCounter.increment();  //Number of dogs:<span class="number">1</span>
+</code></pre>
+<p>让我们创建这样一个实现：</p>
+<pre><code class="bash"><span class="keyword">function</span> CreateCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="built_in">return</span> {increment:increment};
+}
+</code></pre>
+<p>在上述代码中，我们简单返回一个对象，该对象包含了该闭包的所有功能。在某种意义下，我们能定义闭包能返回的一系列信息。   </p>
+<h3 id="增加一个减量">增加一个减量</h3><p>现在，我们能非常简单的为计数器引入减量(decrement)。     </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+
+        console.log(<span class="string">"Number of "</span>+ counterName + <span class="string">": "</span> + counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">':'</span> + counter);
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();  // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();  // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();  // Number of dogs: <span class="number">3</span>
+</code></pre>
+<h3 id="隐藏计数器行为">隐藏计数器行为</h3><p>上述代码还是有写冗余的代码行，没错，就是console.log()。如果能创建一个专门用于显示计数器值的函数将会更好。让我们调用display函数。  </p>
+<pre><code class="bash"><span class="keyword">function</span> createCounter(counterName){
+    var counter = <span class="number">0</span>;
+
+    <span class="keyword">function</span> <span class="function"><span class="title">display</span></span>(){
+        console.log(<span class="string">'Number of '</span>+ counterName + <span class="string">': '</span>+ counter);
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">increment</span></span>(){
+        counter = counter + <span class="number">1</span>;
+        display();
+    }
+
+    <span class="keyword">function</span> <span class="function"><span class="title">decrement</span></span>(){
+        counter = counter - <span class="number">1</span>;
+        display();
+    }
+
+    <span class="built_in">return</span> {
+        increment:increment,
+        decrement:decrement
+    };
+}
+
+var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.increment();   // Number of dogs: <span class="number">1</span>
+dogsCounter.increment();   // Number of dogs: <span class="number">2</span>
+dogsCounter.decrement();   // Number of dogs: <span class="number">1</span>
+</code></pre>
+<p>display()和increment()、decrement()不同，因为它没有被返回，所以无法调用。这意味着以下代码调用会失败：</p>
+<pre><code class="bash">var dogsCounter = createCounter(<span class="string">'dogs'</span>);
+
+dogsCounter.display();    // ERROR!!!
+</code></pre>
+<p>我们让display()函数对外部来说是不可见的。它仅在createCounter()内可见。  </p>
+<h3 id="闭包与面向对象编程">闭包与面向对象编程</h3><p>正如我在一开始说的，闭包的感觉给我感觉就像类一样，实例化、私有/公有方法，都会将一些能操作内部数据的函数联系在一起。因此，你能在任何地方像使用对象一样使用闭包。 </p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/25/使用Bootcamp安装windows8-1/" rel="next" title="使用Bootcamp安装windows8.1">
+                <i class="fa fa-chevron-left"></i> 使用Bootcamp安装windows8.1
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/31/PHP7编译Error-Cannot-find-libz/" rel="prev" title="PHP7编译Error:Cannot find libz">
+                PHP7编译Error:Cannot find libz <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Echo Chiang" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Echo Chiang</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">我们每天度过的称之为日常的生活，其实是一个个奇迹的连续也说不定</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#计数事件"><span class="nav-number">1.</span> <span class="nav-text">计数事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个计数器"><span class="nav-number">2.</span> <span class="nav-text">多个计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引入第一个闭包"><span class="nav-number">3.</span> <span class="nav-text">引入第一个闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为我们的计数器命名"><span class="nav-number">4.</span> <span class="nav-text">为我们的计数器命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改善公用接口"><span class="nav-number">5.</span> <span class="nav-text">改善公用接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加一个减量"><span class="nav-number">6.</span> <span class="nav-text">增加一个减量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏计数器行为"><span class="nav-number">7.</span> <span class="nav-text">隐藏计数器行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包与面向对象编程"><span class="nav-number">8.</span> <span class="nav-text">闭包与面向对象编程</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Echo Chiang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+    
+
+  
+
+
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+
+  
+  
+
+</body>
+</html>
