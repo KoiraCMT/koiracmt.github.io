@@ -222,6 +222,104 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/25/Vue单页应用开发组件切换更新Material-Design-Lite组件/" itemprop="url">
+                  Vue单页应用开发组件切换更新Material Design Lite组件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-08-25T15:21:44+08:00" content="2016-08-25">
+              2016-08-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>前段时间翻前端框架的时候，看到了Material Design Lite，相当对我的胃口，很多组件只要拼凑在一起，就可以写出非常漂亮的页面，本身js特效就更惊艳了，流程性确实没有课挑剔的，所以趁重构后台页面的机会，我就用它和vue在构建单页面应用了。<br>我标题对于我碰到的问题表述的可能不是很清楚，这里先上张图展示下吧。<br><img src="http://ocgc56chp.bkt.clouddn.com/error.png" alt=""><br><img src="http://ocgc56chp.bkt.clouddn.com/right.png" alt=""><br>红框中就是我碰到的问题了，第一幅图中radio的样式没有被加载，而第二幅图中的radio是正常的，用过mdl的朋友应该知道，mdl中的radio上面是有一个js特效的。而我们知道，单页应用页面是不会刷新的，所有从别的页面过来的时候，页面虽然被渲染了，但是mdl的js并没有被重新加载，当前页面的dom也就没有被js绑定事件。那么如何处理这个问题也一目了然了，那就是当页面被渲染后，重新加载mdl的js，让它更新component。<br>但虽然知道如何处理，但我当时又犯难了，那就是不知道怎么重新加载js啊。这里解决办法被发现也是相当巧合的。我当时就在想，既然问题描述后Google不出来答案，那我就直接看别人使用vue+Material Design Lite是怎么做的呗，在github上我找到了 <a href="https://github.com/hilongjw/vue-material-blog" target="_blank" rel="external">hilongjw/vue-material-blog</a>这个项目，然后翻看了<a href="https://github.com/hilongjw/vue-material-blog/blob/master/src/components/entry.vue" target="_blank" rel="external">entry.vue</a>这个页面，看到了这段代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ready: <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">     this.<span class="variable">$nextTick</span>(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">       componentHandler.upgradeAllRegistered();</span><br><span class="line">     &#125;)</span><br><span class="line">   &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>当时虽然不知道componentHandler.upgradeAllRegistered()是干什么的，但是看到this.$nextTick我知道是什么啊，它是在DOM更新之后执行一个事件。而我当时看了作者的demo，他的页面运行时完全正常的，唯一和我不同的，也就是这一段代码了，所有我就将这段代码复制到了自己的代码中，发现这个问题终于解决了。<br>搞定之后，我开始对this.$nextTick中的回调产生了兴趣，想知道这是个什么，所有用了代码追踪，发现了componentHandler.upgradeAllRegistered()方法在mdlComponentsHandler.js中，而在upgradeAllRegistered()上面有官方对其的注释<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Upgrades all registered components found <span class="keyword">in</span> the current DOM. This is</span><br><span class="line"> * automatically called on window load.</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></p>
+<p>这下总算明白了，这不就是我要找的重新加载js的方法嘛！<br>以上是我这次整个解决问题的思路吧，虽然很简陋啊，但总算是靠自己的力量搞定了，心中还是小小的开心的。</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/19/MariaDB-10-1-16-Galera-Cluster-on-CentOS-7/" itemprop="url">
                   MariaDB 10.1.16 Galera Cluster on CentOS 7
                 </a>
@@ -1226,21 +1324,21 @@ dogsCounter.display();    // ERROR!!!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
